@@ -91,8 +91,6 @@ def main(filepath='data/bank/bank-full.csv', no_figs=False, no_train=False):
         # filter for clients who were not previously successful
         # to specifically check precision and recall on this segment
         new_user_filter = raw_df[raw_df['poutcome'] != 'success'].index
-        print(raw_df.shape)
-        print(raw_df[raw_df['poutcome'] != 'success'].shape)
 
         print('------Training a more complex decision tree')
         big_dt_clf = DecisionTreeClassifier(max_depth=10, min_samples_leaf=10)
