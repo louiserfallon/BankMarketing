@@ -65,7 +65,7 @@ def extract_data(filepath, cat_cols):
     return df_concatenated
 
 
-def check_model_quality(clf, X_test, y_test, new_user_filter, clf_name):
+def check_model_quality(clf, X_test, y_test, clf_name):
     """
     Checks & prints out the accuracy, precision, recall, f1, and ROC
     of a specific classifier against a test set
@@ -73,7 +73,6 @@ def check_model_quality(clf, X_test, y_test, new_user_filter, clf_name):
     :param clf: a trained model
     :param X_test: the test input data
     :param y_test: the test output/success data
-    :param new_user_filter: a pandas series of locations, to filter results on
     :param clf_name: the name of the classifier, to be printed
     :return: None
     """
@@ -90,14 +89,3 @@ def check_model_quality(clf, X_test, y_test, new_user_filter, clf_name):
     y_pred_proba = clf.predict_proba(X_test)[:, 1]
     auc = roc_auc_score(y_test, y_pred_proba)
     print(f'{clf_name} ROC AUC: {auc:.2f}')
-
-    print(y_test.shape)
-    y_test_subset = y_test[y_test.index.isin(new_user_filter)]
-    print(y_test_subset.shape)
-    y_pred_series = pd.Series(y_pred, index=y_test.index)
-    y_pred_subset = y_pred[y_pred_series.index.isin(new_user_filter)]
-
-    precision = precision_score(y_test_subset, y_pred_subset, pos_label='yes')
-    recall = recall_score(y_test_subset, y_pred_subset, pos_label='yes')
-    print(f'{clf_name} Precision on new clients: {precision:.2f}')
-    print(f'{clf_name} Recall on new clients: {recall:.2f}')
