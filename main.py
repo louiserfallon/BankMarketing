@@ -91,7 +91,7 @@ def main(filepath='data/bank/bank-full.csv', no_figs=False, no_train=False):
         print('------Training a more complex decision tree')
         big_dt_clf = DecisionTreeClassifier(max_depth=10, min_samples_leaf=10)
         big_dt_clf.fit(X_train, y_train)
-        dh.check_model_quality(big_dt_clf, X_test, y_test, new_user_filter, clf_name='big_decis_tree')
+        dh.check_model_quality(big_dt_clf, X_test, y_test, clf_name='big_decis_tree')
         print('------Feature Importances')
         # Print out significant features (rough check)
         for importance, feature_name in sorted(zip(big_dt_clf.feature_importances_, X_train.columns), reverse=True):
