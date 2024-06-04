@@ -88,20 +88,16 @@ def main(filepath='data/bank/bank-full.csv', no_figs=False, no_train=False):
                                                             raw_df['success'],
                                                             test_size=0.1, random_state=8)
 
-        # filter for clients who were not previously successful
-        # to specifically check precision and recall on this segment
-        new_user_filter = raw_df[raw_df['poutcome'] != 'success'].index
-
         print('------Training a more complex decision tree')
         big_dt_clf = DecisionTreeClassifier(max_depth=10, min_samples_leaf=10)
         big_dt_clf.fit(X_train, y_train)
-        dh.check_model_quality(big_dt_clf, X_test, y_test, new_user_filter, clf_name='big_decis_tree')
+        dh.check_model_quality(big_dt_clf, X_test, y_test, clf_name='big_decis_tree')
         print('------Feature Importances')
         # Print out significant features (rough check)
         for importance, feature_name in sorted(zip(big_dt_clf.feature_importances_, X_train.columns), reverse=True):
             if importance > 0.01:
                 print(f'{feature_name}: {importance:.4f}')
-        dh.check_model_quality(big_dt_clf, X_test, y_test, new_user_filter, clf_name='decis tree')
+        dh.check_model_quality(big_dt_clf, X_test, y_test, clf_name='decis tree')
 
         print(f'------Training a logistic regression')
         linear_clf = LogisticRegression(penalty='l1', solver='liblinear', C=0.5)
@@ -112,7 +108,7 @@ def main(filepath='data/bank/bank-full.csv', no_figs=False, no_train=False):
             if abs(coef) > 0.01:
                 print(f"{feature}: {coef:.4f}")
         print('------Checking model quality')
-        dh.check_model_quality(linear_clf, X_test, y_test, new_user_filter, clf_name='linear_lasso')
+        dh.check_model_quality(linear_clf, X_test, y_test, clf_name='linear_lasso')
 
         print(f'------Training a GBDT')
         gbdt_clf = GradientBoostingClassifier(n_estimators=20, learning_rate=0.1, max_depth=5)
@@ -122,7 +118,7 @@ def main(filepath='data/bank/bank-full.csv', no_figs=False, no_train=False):
         for importance, feature_name in sorted(zip(gbdt_clf.feature_importances_, X_train.columns), reverse=True):
             if importance > 0.01:
                 print(f'{feature_name}: {importance:.4f}')
-        dh.check_model_quality(gbdt_clf, X_test, y_test, new_user_filter, clf_name='gbdt')
+        dh.check_model_quality(gbdt_clf, X_test, y_test, clf_name='gbdt')
 
 
 if __name__ == "__main__":
