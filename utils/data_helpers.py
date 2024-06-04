@@ -65,7 +65,7 @@ def extract_data(filepath, cat_cols):
     return df_concatenated
 
 
-def check_model_quality(clf, X_test, y_test, new_user_filter, clf_name):
+def check_model_quality(clf, X_test, y_test, clf_name):
     """
     Checks & prints out the accuracy, precision, recall, f1, and ROC
     of a specific classifier against a test set
@@ -73,7 +73,6 @@ def check_model_quality(clf, X_test, y_test, new_user_filter, clf_name):
     :param clf: a trained model
     :param X_test: the test input data
     :param y_test: the test output/success data
-    :param new_user_filter: a pandas series of locations, to filter results on
     :param clf_name: the name of the classifier, to be printed
     :return: None
     """
